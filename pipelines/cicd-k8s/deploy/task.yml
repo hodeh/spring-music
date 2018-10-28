@@ -8,6 +8,7 @@ image_resource:
     tag: 8-jdk-alpine
 
 inputs:
+- name: spring-music-cicd
 - name: spring-music-image
 
 run:
