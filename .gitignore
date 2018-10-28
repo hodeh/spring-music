@@ -15,7 +15,9 @@ local.properties
 target/
 
 .gradle
-build/
+/build/
 
 *.log*
 /classes/
+
+pipeline-vars.yml
