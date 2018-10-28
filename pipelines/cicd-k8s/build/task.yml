@@ -9,7 +9,7 @@ image_resource:
 
 inputs:
 - name: spring-music-cicd
-- name: spring-music-repo
+- name: spring-music
 - name: version
 
 outputs:
