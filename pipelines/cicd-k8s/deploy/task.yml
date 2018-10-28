@@ -9,7 +9,7 @@ image_resource:
 
 inputs:
 - name: spring-music-cicd
-- name: spring-music-image
+- name: version
 
 run:
   path: spring-music-cicd/pipelines/cicd-k8s/deploy/task.sh
