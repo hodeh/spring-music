@@ -12,7 +12,7 @@ pks login --skip-ssl-validation --api pks.pcf.pcfenv1.pocs.pcfs.io --username pk
 pks get-credentials pks-demo-run
 kubectl config use-context pks-demo-run
 
-kubectl get namespaces | grep "$ENVIRONMENT" >/dev/null 2&>1
+kubectl get namespace "$ENVIRONMENT" >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
   cat << ---EOF > namespace.yml
 apiVersion: v1
@@ -24,7 +24,7 @@ metadata:
 fi
 kubectl config set-context pks-demo-run --namespace=$ENVIRONMENT
 
-kubectl get secret harbor-cred >/dev/null 2&>1
+kubectl get secret harbor-cred >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
     
   kubectl create secret docker-registry harbor-cred \
@@ -87,7 +87,7 @@ spec:
 
 set +e
 
-kubectl get service --namespace sandbox spring-music >/dev/null 2&>1
+kubectl get service --namespace sandbox spring-music >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
   kubectl expose deployment spring-music --type=LoadBalancer --name=spring-music
 fi
