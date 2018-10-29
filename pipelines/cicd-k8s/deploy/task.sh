@@ -87,10 +87,10 @@ spec:
 
 set +e
 
-kubectl get service --namespace sandbox spring-music >/dev/null 2>&1
+kubectl get service --namespace $ENVIRONMENT spring-music >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
-  kubectl expose deployment spring-music --type=LoadBalancer --name=spring-music
+  kubectl expose deployment spring-music --namespace $ENVIRONMENT --type=LoadBalancer --name=spring-music 
 fi
 
-SERVICE_ENDPOINT=$(kubectl get service --namespace sandbox spring-music -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+SERVICE_ENDPOINT=$(kubectl get service --namespace $ENVIRONMENT spring-music -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo -e "\n\n**** Spring Music in environment '$ENVIRONMENT' available at: http://${SERVICE_ENDPOINT}:8080"
