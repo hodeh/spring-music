@@ -1,0 +1,89 @@
+---
+
+jobs:
+
+- name: build
+  plan:
+
+  - aggregate:
+
+    - get: spring-music-cicd
+
+    - get: spring-music
+      trigger: true
+
+    - get: version
+      params: 
+        bump: patch
+
+  - task: build-app
+    file: spring-music-cicd/pipelines/cicd-k8s/build/task.yml
+
+  - put: spring-music-image
+    params:
+      build: docker-build
+      tag: docker-build/version
+      tag_as_latest: true
+
+  - put: version
+    params: 
+      file: docker-build/version
+
+- name: deploy-test
+  plan:
+
+  - aggregate:
+
+    - get: spring-music-cicd
+
+    - get: version
+      trigger: true
+      passed: [build]
+
+  - task: deploy-app
+    file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
+    params: 
+      ENVIRONMENT: test
+      DOCKER_REGISTRY_SERVER: {{docker_insecure_registries}}
+      DOCKER_REGISTRY_USERNAME: {{docker_registry_user}}
+      DOCKER_REGISTRY_PASSWORD: {{docker_registry_pass}}
+
+resources:
+
+- name: spring-music-cicd
+  type: git
+  source:
+    uri: git@github.com:mevansam/spring-music.git
+    branch: master
+    private_key: {{git_key}}
+    paths:
+    - pipelines/**
+
+- name: spring-music
+  type: git
+  source:
+    uri: git@github.com:mevansam/spring-music.git
+    branch: master
+    private_key: {{git_key}}
+    ignore_paths:
+    - version
+    - pipelines/**
+
+- name: version
+  type: semver
+  source:
+    initial_version: 0.0.0
+    driver: git
+    uri: git@github.com:mevansam/spring-music.git
+    branch: master
+    file: version
+    git_user: {{git_user}}
+    private_key: {{git_key}}
+
+- name: spring-music-image
+  type: docker-image
+  source:
+    repository: {{docker_repository}}
+    insecure_registries: [ {{docker_insecure_registries}} ]
+    username: {{docker_registry_user}}
+    password: {{docker_registry_pass}}

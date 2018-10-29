@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xeuo pipefail
+set -xeu
 
 export VERSION=$(cat version/version)
 cp version/version docker-build/version
