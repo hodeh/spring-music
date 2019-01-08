@@ -44,6 +44,9 @@ jobs:
     file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
     params: 
       ENVIRONMENT: test
+      PKS_API_ENDPOINT: {{pks_api_endpoint}}
+      PKS_USERNAME: {{pks_username}}
+      PKS_PASSWORD: {{pks_password}}
       DOCKER_REGISTRY_SERVER: {{docker_insecure_registries}}
       DOCKER_REGISTRY_USERNAME: {{docker_registry_user}}
       DOCKER_REGISTRY_PASSWORD: {{docker_registry_pass}}

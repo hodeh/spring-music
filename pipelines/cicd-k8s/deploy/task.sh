@@ -8,7 +8,11 @@ chmod +x /usr/local/bin/kubectl
 curl -L https://s3.amazonaws.com/mevansam-software/pivotal/pks -o /usr/local/bin/pks
 chmod +x /usr/local/bin/pks
 
-pks login --skip-ssl-validation --api pks.pcf.pcfenv1.pocs.pcfs.io --username pks-admin --password Passw0rd
+pks login --skip-ssl-validation \
+  --api $PKS_API_ENDPOINT \
+  --username $PKS_USERNAME \
+  --password $PKS_PASSWORD
+
 pks get-credentials pks-demo-run
 kubectl config use-context pks-demo-run
 
@@ -20,20 +24,23 @@ kind: Namespace
 metadata:
   name: $ENVIRONMENT
 ---EOF
+
+  set -e
   kubectl create -f namespace.yml
+  set +e
 fi
 kubectl config set-context pks-demo-run --namespace=$ENVIRONMENT
 
 kubectl get secret harbor-cred >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
-    
+  
+  set -e
   kubectl create secret docker-registry harbor-cred \
     --docker-server=$DOCKER_REGISTRY_SERVER \
     --docker-username=$DOCKER_REGISTRY_USERNAME \
     --docker-password=$DOCKER_REGISTRY_PASSWORD
+  set +e
 fi
-
-set -e
 
 export VERSION=$(cat version/version)
 echo "Deploying to spring-music verion $VERSION to $ENVIRONMENT."
@@ -65,9 +72,14 @@ spec:
         - containerPort: 8080
 ---EOF
 
+set -e
 kubectl apply -f deployment.yml
+set +e
 
-cat << ---EOF > service.yml
+kubectl get service --namespace $ENVIRONMENT spring-music >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+
+  cat << ---EOF > service.yml
 kind: Service
 metadata:
   name: spring-music
@@ -85,10 +97,6 @@ spec:
     app: spring-music
 ---EOF
 
-set +e
-
-kubectl get service --namespace $ENVIRONMENT spring-music >/dev/null 2>&1
-if [[ $? -ne 0 ]]; then
   kubectl expose deployment spring-music --namespace $ENVIRONMENT --type=LoadBalancer --name=spring-music 
 fi
 
