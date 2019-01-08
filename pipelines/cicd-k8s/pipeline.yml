@@ -44,6 +44,7 @@ jobs:
     file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
     params: 
       ENVIRONMENT: test
+      PKS_CLUSTER_NAME: {{pks_cluster_name}}
       PKS_API_ENDPOINT: {{pks_api_endpoint}}
       PKS_USERNAME: {{pks_username}}
       PKS_PASSWORD: {{pks_password}}

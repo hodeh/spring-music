@@ -13,8 +13,8 @@ pks login --skip-ssl-validation \
   --username $PKS_USERNAME \
   --password $PKS_PASSWORD
 
-pks get-credentials pks-demo-run
-kubectl config use-context pks-demo-run
+pks get-credentials $PKS_CLUSTER_NAME
+kubectl config use-context $PKS_CLUSTER_NAME
 
 kubectl get namespace "$ENVIRONMENT" >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
@@ -29,7 +29,7 @@ metadata:
   kubectl create -f namespace.yml
   set +e
 fi
-kubectl config set-context pks-demo-run --namespace=$ENVIRONMENT
+kubectl config set-context $PKS_CLUSTER_NAME --namespace=$ENVIRONMENT
 
 kubectl get secret harbor-cred >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
