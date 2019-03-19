@@ -13,7 +13,7 @@ pks login --skip-ssl-validation \
   --username $PKS_USERNAME \
   --password $PKS_PASSWORD
 
-pks get-credentials $PKS_CLUSTER_NAME
+echo $PKS_PASSWORD | pks get-credentials $PKS_CLUSTER_NAME
 kubectl config use-context $PKS_CLUSTER_NAME
 
 kubectl get namespace "$ENVIRONMENT" >/dev/null 2>&1
