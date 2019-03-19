@@ -31,15 +31,11 @@ jobs:
 
 - name: deploy-test
   plan:
-
   - aggregate:
-
     - get: spring-music-cicd
-
     - get: version
       trigger: true
       passed: [build]
-
   - task: deploy-app
     file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
     params: 
@@ -53,8 +49,65 @@ jobs:
       DOCKER_REGISTRY_PASSWORD: ((docker_registry_pass))
       IMAGE_REPO: ((docker_repository))
 
-resources:
+- name: deploy-test
+  plan:
+  - aggregate:
+    - get: spring-music-cicd
+    - get: version
+      passed: [build]
+  - task: deploy-app
+    file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
+    params: 
+      ENVIRONMENT: test
+      PKS_CLUSTER_NAME: ((pks_cluster_name))
+      PKS_API_ENDPOINT: ((pks_api_endpoint))
+      PKS_USERNAME: ((pks_username))
+      PKS_PASSWORD: ((pks_password))
+      DOCKER_REGISTRY_SERVER: ((docker_insecure_registries))
+      DOCKER_REGISTRY_USERNAME: ((docker_registry_user))
+      DOCKER_REGISTRY_PASSWORD: ((docker_registry_pass))
+      IMAGE_REPO: ((docker_repository))
 
+- name: deploy-dev
+  plan:
+  - aggregate:
+    - get: spring-music-cicd
+    - get: version
+      passed: [build]
+  - task: deploy-app
+    file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
+    params: 
+      ENVIRONMENT: dev
+      PKS_CLUSTER_NAME: ((pks_cluster_name))
+      PKS_API_ENDPOINT: ((pks_api_endpoint))
+      PKS_USERNAME: ((pks_username))
+      PKS_PASSWORD: ((pks_password))
+      DOCKER_REGISTRY_SERVER: ((docker_insecure_registries))
+      DOCKER_REGISTRY_USERNAME: ((docker_registry_user))
+      DOCKER_REGISTRY_PASSWORD: ((docker_registry_pass))
+      IMAGE_REPO: ((docker_repository))
+
+- name: deploy-prod
+  plan:
+  - aggregate:
+    - get: spring-music-cicd
+    - get: version
+      passed: [build]
+  - task: deploy-app
+    file: spring-music-cicd/pipelines/cicd-k8s/deploy/task.yml
+    params: 
+      ENVIRONMENT: prod
+      PKS_CLUSTER_NAME: ((pks_cluster_name))
+      PKS_API_ENDPOINT: ((pks_api_endpoint))
+      PKS_USERNAME: ((pks_username))
+      PKS_PASSWORD: ((pks_password))
+      DOCKER_REGISTRY_SERVER: ((docker_insecure_registries))
+      DOCKER_REGISTRY_USERNAME: ((docker_registry_user))
+      DOCKER_REGISTRY_PASSWORD: ((docker_registry_pass))
+      IMAGE_REPO: ((docker_repository))
+      
+
+resources:
 - name: spring-music-cicd
   type: git
   source:
