@@ -57,7 +57,7 @@ resources:
 - name: spring-music-cicd
   type: git
   source:
-    uri: git@github.com:mevansam/spring-music.git
+    uri: git@github.com:hodeh/spring-music.git
     branch: master
     private_key: ((git_key))
     paths:
@@ -66,7 +66,7 @@ resources:
 - name: spring-music
   type: git
   source:
-    uri: git@github.com:mevansam/spring-music.git
+    uri: git@github.com:hodeh/spring-music.git
     branch: master
     private_key: ((git_key))
     ignore_paths:
@@ -78,7 +78,7 @@ resources:
   source:
     initial_version: 0.0.0
     driver: git
-    uri: git@github.com:mevansam/spring-music.git
+    uri: git@github.com:hodeh/spring-music.git
     branch: master
     file: version
     git_user: ((git_user))
