@@ -77,11 +77,11 @@ spec:
         - containerPort: 8080
         readinessProbe:
           httpGet:
-             path: /
-             port: 8080
-             initialDelaySeconds: 5
-             periodSeconds: 5
-             successThreshold: 1
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
 ---EOF
 
 set -e
