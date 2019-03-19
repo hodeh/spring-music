@@ -25,6 +25,9 @@ jobs:
       tag: docker-build/version
       tag_as_latest: true
 
+  - put: version
+    params: 
+      file: docker-build/version
 
 - name: deploy-test
   plan:
@@ -66,6 +69,9 @@ resources:
     uri: git@github.com:hodeh/spring-music.git
     branch: master
     private_key: ((git_key))
+    ignore_paths:
+    - version
+    - pipelines/**
 
 - name: version
   type: semver
