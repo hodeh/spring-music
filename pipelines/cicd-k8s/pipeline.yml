@@ -13,8 +13,8 @@ jobs:
       trigger: true
 
     - get: version
-      params: 
-        bump: patch
+      params: {bump: minor}
+
 
   - task: build-app
     file: spring-music-cicd/pipelines/cicd-k8s/build/task.yml
@@ -26,8 +26,8 @@ jobs:
       tag_as_latest: true
 
   - put: version
-    params: 
-      file: docker-build/version
+    params: {file: version/version}
+
 
 - name: deploy-test
   plan:
@@ -51,6 +51,7 @@ jobs:
       DOCKER_REGISTRY_SERVER: ((docker_insecure_registries))
       DOCKER_REGISTRY_USERNAME: ((docker_registry_user))
       DOCKER_REGISTRY_PASSWORD: ((docker_registry_pass))
+      IMAGE_REPO: ((docker_repository))
 
 resources:
 

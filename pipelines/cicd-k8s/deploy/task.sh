@@ -67,7 +67,7 @@ spec:
       - name: harbor-cred
       containers:
       - name: spring-music
-        image: harbor.pcf.pcfenv1.pocs.pcfs.io/demo/spring-music:$VERSION
+        image: $IMAGE_REPO:$VERSION
         ports:
         - containerPort: 8080
 ---EOF
