@@ -45,6 +45,10 @@ fi
 export VERSION=$(cat version/version)
 echo "Deploying to spring-music verion $VERSION to $ENVIRONMENT."
 
+kubectl get deployment --namespace $ENVIRONMENT spring-music >/dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+echo "Creating new deployment"
+
 cat << ---EOF > deployment.yml
 apiVersion: apps/v1
 kind: Deployment
@@ -68,6 +72,8 @@ spec:
       containers:
       - name: spring-music
         image: $IMAGE_REPO:$VERSION
+        imagePullPolicy: "Always"
+
         ports:
         - containerPort: 8080
 ---EOF
@@ -75,6 +81,11 @@ spec:
 set -e
 kubectl apply -f deployment.yml
 set +e
+else
+echo "updating existing deployment"
+
+kubectl set image deployment/spring-music spring-music=$IMAGE_REPO:$VERSION --namespace $ENVIRONMENT
+fi
 
 kubectl get service --namespace $ENVIRONMENT spring-music >/dev/null 2>&1
 if [[ $? -ne 0 ]]; then
