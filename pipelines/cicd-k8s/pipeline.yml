@@ -12,8 +12,8 @@ jobs:
     file: spring-music-cicd/pipelines/cicd-k8s/build/task.yml
   - put: spring-music-image
     params:
-      build: docker-build
-      tag: docker-build/version
+      build: spring-music
+      tag: version/version
       tag_as_latest: true
   - put: version
     params: {file: version/version}
