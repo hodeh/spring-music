@@ -6,9 +6,9 @@ set -xu
 export ROOT_FOLDER=$( pwd )
 export GRADLE_USER_HOME="${ROOT_FOLDER}/.gradle"
 ls
-
-./spring-music/gradlew build
-
+cd spring-music
+gradlew build
+cd -
 cp version/version docker-build/version
 mv spring-music/build/libs/spring-music-1.0.jar docker-build
 
