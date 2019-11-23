@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xeu
+set -xes
 
 
 export ROOT_FOLDER=$( pwd )
