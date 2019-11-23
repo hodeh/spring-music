@@ -1,10 +1,11 @@
 #!/bin/sh
 
-set -xes
+set -xu
 
 
 export ROOT_FOLDER=$( pwd )
 export GRADLE_USER_HOME="${ROOT_FOLDER}/.gradle"
+ls
 
 ./spring-music/gradlew build
 
