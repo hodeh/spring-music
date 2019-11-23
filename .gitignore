@@ -21,3 +21,5 @@ target/
 /classes/
 
 pipeline-vars.yml
+/bin/
+pipelines/cicd-k8s/vars.yml
