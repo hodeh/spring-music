@@ -2,10 +2,10 @@
 
 set -xu
 
-curl -L https://s3.amazonaws.com/mevansam-software/pivotal/kubectl -o /usr/local/bin/kubectl
+curl -L https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
 chmod +x /usr/local/bin/kubectl
 
-curl -L https://s3.amazonaws.com/mevansam-software/pivotal/pks -o /usr/local/bin/pks
+curl -L https://github.com/hodeh/artifacts-and-binaries/blob/master/pks-linux-amd64-1.6.1-build.20?raw=true -o /usr/local/bin/pks
 chmod +x /usr/local/bin/pks
 
 pks login --skip-ssl-validation \
